@@ -63,6 +63,8 @@ const css = () => src(path.src.css).pipe(scss({
 
 const images = () => src(path.src.img).pipe(dest(path.build.img)).pipe(browsersync.stream())
 
+const js = () => src(path.src.js).pipe(fileinclude()).pipe(dest(path.build.js)).pipe(browsersync.stream())
+
 function fonts() {
     src(path.src.fonts).pipe(ttf2woff())
         .pipe(dest(path.build.fonts));
@@ -98,15 +100,17 @@ const watchFiles = () => {
     gulp.watch([path.watch.html], html)
     gulp.watch([path.watch.css], css)
     gulp.watch([path.watch.img], images)
+    gulp.watch([path.watch.js], js)
 }
 
 const clean = () => del(path.clean)
 
-let build = gulp.series(clean, gulp.parallel(css, html, images, fonts), fontsStyle)
+let build = gulp.series(clean, gulp.parallel(css, html, images, js, fonts), fontsStyle)
 let watch = gulp.parallel(build, watchFiles, browserSync)
 
 exports.fontsStyle = fontsStyle;
 exports.fonts = fonts;
+exports.js = js;
 exports.images = images;
 exports.css = css;
 exports.html = html;
