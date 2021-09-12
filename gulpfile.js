@@ -1,4 +1,4 @@
-const project_folder = "dist"
+const project_folder = require('path').basename(__dirname)
 const source_folder = "#src"
 
 let fs = require('fs')
